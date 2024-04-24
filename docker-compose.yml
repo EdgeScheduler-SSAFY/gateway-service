@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+
+  gateway-app:
+    container_name: gateway-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose :
+      - 8000
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    external: true
