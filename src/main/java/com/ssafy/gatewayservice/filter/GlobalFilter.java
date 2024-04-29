@@ -22,21 +22,17 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<GlobalFilter.Conf
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
 
-            log.info("Global Filter baseMessage: {}, {}", config.getBaseMessage(), request.getRemoteAddress());
+            log.debug("Global Filter baseMessage: {}, {}", config.getBaseMessage(), request.getRemoteAddress());
             if (config.isPreLogger()) {
-                log.info("Global Filter Start: request id -> {}", request.getId());
+                log.debug("Global Filter Start: request id -> {}", request.getId());
             }
             return chain.filter(exchange).then(Mono.fromRunnable(()->{
                 if (config.isPostLogger()) {
-                    log.info("Global Filter End: response code -> {}", response.getStatusCode());
+                    log.debug("Global Filter End: response code -> {}", response.getStatusCode());
                 }
             }));
         });
     }
-
-//    public abstract Mono<Void> filter(
-//            ServerWebExchange exchange,
-//            GatewayFilterChain chain);
 
     @Data
     public static class Config {

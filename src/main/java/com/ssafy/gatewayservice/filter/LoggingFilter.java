@@ -20,35 +20,21 @@ public class LoggingFilter extends AbstractGatewayFilterFactory<LoggingFilter.Co
 
     @Override
     public GatewayFilter apply(Config config) {
-//        return ((exchange, chain) -> {
-//            ServerHttpRequest request = exchange.getRequest();
-//            ServerHttpResponse response = exchange.getResponse();
-//
-//            log.info("Logging Filter baseMessage: {}", config.getBaseMessage());
-//            if (config.isPreLogger()) {
-//                log.info("Logging Filter Start: request id -> {}", request.getId());
-//            }
-//            return chain.filter(exchange).then(Mono.fromRunnable(()->{
-//                if (config.isPostLogger()) {
-//                    log.info("Logging Filter End: response code -> {}", response.getStatusCode());
-//                }
-//            }));
-//        });
+        //Logging filter sample
         GatewayFilter filter = new OrderedGatewayFilter((exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
 
-            log.info("Logging Filter baseMessage: {}", config.getBaseMessage());
+            log.debug("Logging Filter baseMessage: {}", config.getBaseMessage());
             if (config.isPreLogger()) {
-                log.info("Logging PRE Filter: request id -> {}", request.getId());
+                log.debug("Logging PRE Filter: request id -> {}", request.getId());
             }
             return chain.filter(exchange).then(Mono.fromRunnable(()->{
                 if (config.isPostLogger()) {
-                    log.info("Logging POST Filter: response code -> {}", response.getStatusCode());
+                    log.debug("Logging POST Filter: response code -> {}", response.getStatusCode());
                 }
             }));
         }, Ordered.HIGHEST_PRECEDENCE);
-
         return filter;
     }
 

@@ -6,12 +6,14 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-#      defaultZone: http://localhost:8761/eureka
-      defaultZone: http://43.202.4.152:8761/eureka
+      defaultZone: ${gateway.host.url}
 
 spring:
   application:
     name: gateway-service
+  config:
+    import:
+      - optional:env.yml
   cloud:
     gateway:
       default-filters:
@@ -44,3 +46,52 @@ spring:
                baseMessage: Hi, there.
                preLogger: true
                postLogger: true
+
+
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/uncheck
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - CustomFilter
+            - LoggingFilter
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/check
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - CustomFilter
+            - LoggingFilter
+            - JwtAuthenticationFilter
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/auth/info/**
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - CustomFilter
+            - LoggingFilter
+            - JwtAuthenticationFilter
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/auth/**
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - CustomFilter
+            - LoggingFilter
+            - JwtAuthenticationFilter
+---
+#spring:
+#  main:
+#    web-application-type: reactive
