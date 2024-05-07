@@ -47,6 +47,23 @@ spring:
                preLogger: true
                postLogger: true
 
+        - id: notification-service
+          uri: lb://NOTIFICATION-SERVICE
+          predicates:
+            - Path=/notification-service/**
+            # - Method=GET, POST # 전체 허용하려면 생략
+          filters:
+            - RewritePath=/notification-service/(?<segment>.*), /$\{segment}
+#            - JwtAuthenticationFilter
+
+        - id: schedule-service
+          uri: lb://SCHEDULE-SERVICE
+          predicates:
+            - Path=/schedule-service/**
+            # - Method=GET, POST # 전체 허용하려면 생략
+          filters:
+            - RewritePath=/schedule-service/(?<segment>.*), /$\{segment}
+#            - JwtAuthenticationFilter
 
         - id: user-service
           uri: lb://USER-SERVICE
