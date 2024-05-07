@@ -100,6 +100,16 @@ spring:
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
+            - Path=/user-service/oauth2/authorization/**
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - CustomFilter
+            - LoggingFilter
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
             - Path=/user-service/members
             - Method=GET
           filters:
@@ -129,6 +139,17 @@ spring:
             - CustomFilter
             - LoggingFilter
             - JwtAuthenticationFilter
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/auth/token/refresh
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - CustomFilter
+            - LoggingFilter
+            - JwtAuthenticationFilterToken
 ---
 #spring:
 #  main:
