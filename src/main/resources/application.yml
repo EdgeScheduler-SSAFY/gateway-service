@@ -97,24 +97,25 @@ spring:
             - CustomFilter
             - LoggingFilter
             - JwtAuthenticationFilter
-        - id: user-service
-          uri: lb://USER-SERVICE
-          predicates:
-            - Path=/user-service/oauth2/authorization/**
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-            - CustomFilter
-            - LoggingFilter
-        - id: user-service
-          uri: lb://USER-SERVICE
-          predicates:
-            - Path=/user-service/login/oauth2/code/**
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-            - CustomFilter
-            - LoggingFilter
+          # gateway 서버 통해서 구글 로그인 하려고하는데 잘 안되서 일단 그냥 다시 user-service 직접 보내는 것으로 작업
+#        - id: user-service
+#          uri: lb://USER-SERVICE
+#          predicates:
+#            - Path=/user-service/oauth2/authorization/**
+#          filters:
+#            - RemoveRequestHeader=Cookie
+#            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+#            - CustomFilter
+#            - LoggingFilter
+#        - id: user-service
+#          uri: lb://USER-SERVICE
+#          predicates:
+#            - Path=/user-service/login/oauth2/code/**
+#          filters:
+#            - RemoveRequestHeader=Cookie
+#            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+#            - CustomFilter
+#            - LoggingFilter
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
