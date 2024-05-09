@@ -16,6 +16,20 @@ spring:
       - optional:env.yml
   cloud:
     gateway:
+      globalcors:
+        cors-configurations:
+            '[/**]':
+                allowedOrigins: "http://localhost:8080", "http://localhost:3000", "https://edgescheduler.co.kr"
+                allowedMethods:
+                - GET
+                - POST
+                - PUT
+                - PATCH
+                - DELETE
+                - OPTIONS
+                allowedHeaders:
+                - "*"
+                allowCredentials: true
       default-filters:
         - name: GlobalFilter
           args:
