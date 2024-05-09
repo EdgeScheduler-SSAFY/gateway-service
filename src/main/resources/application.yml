@@ -19,7 +19,10 @@ spring:
       globalcors:
         cors-configurations:
             '[/**]':
-                allowedOrigins: "http://localhost:8080", "http://localhost:3000", "https://edgescheduler.co.kr"
+                allowedOrigins:
+                - "http://localhost:8080"
+                - "http://localhost:3000"
+                - "https://edgescheduler.co.kr"
                 allowedMethods:
                 - GET
                 - POST
