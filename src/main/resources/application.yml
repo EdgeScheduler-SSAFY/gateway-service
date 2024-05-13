@@ -71,7 +71,7 @@ spring:
             # - Method=GET, POST # 전체 허용하려면 생략
           filters:
             - RewritePath=/notification-service/(?<segment>.*), /$\{segment}
-        #            - JwtAuthenticationFilter
+            - JwtAuthenticationFilter
 
         - id: schedule-service
           uri: lb://SCHEDULE-SERVICE
